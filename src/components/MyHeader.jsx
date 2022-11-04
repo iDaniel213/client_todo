@@ -6,9 +6,9 @@ import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-
-
-
+ 
+ 
+ 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -23,7 +23,7 @@ const Search = styled('div')(({ theme }) => ({
     width: 'auto',
   },
 }));
-
+ 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: '100%',
@@ -33,7 +33,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
 }));
-
+ 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
@@ -50,21 +50,23 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-
-export const MyHeader=({setTitle})=> {
-const [text,setText]=useState('')
-
-const handleChange=(e)=> {
-  console.log(e.target.value)
-  setText(e.target.value);
-}
-  
-
-  const handleClick=()=> {
-    //console.log("klikk")
-    setTitle(text)
+ 
+export const MyHeader=({isLoggedIn,setIsLoggedIn})=> {
+  const [userpw,setUserpw] = useState('')
+ 
+ 
+ 
+ const handlelogout =()=> {
+  setIsLoggedIn(false)
+  setUserpw('')
+ }
+ 
+  const HandleLogin=()=> {
+   if(userpw==process.env.REACT_APP_PASSWORD)
+      setIsLoggedIn(true)
+      setUserpw('')
   };
-
+ 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -79,10 +81,15 @@ const handleChange=(e)=> {
           </Typography>
           <Search>
             <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }} onChange={handleChange}
+              type="password"
+              placeholder="Password"
+              onChange={(e)=>setUserpw(e.target.value)}
             />
-            <Button sx={{color:"white",border:'1px solid white'}} onClick={handleClick}>Search</Button>
+            {isLoggedIn ?
+            <Button sx={{color:"white",border:'1px solid white'}} onClick={handlelogout}>Logout</Button>
+            :
+            <Button sx={{color:"white",border:'1px solid white'}} onClick={HandleLogin}>Login</Button>
+}
           </Search>
         </Toolbar>
       </AppBar>
